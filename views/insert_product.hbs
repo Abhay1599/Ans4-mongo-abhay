@@ -1,0 +1,111 @@
+{{#if successMessage}}
+  <div class="alert alert-success" role="alert">
+    {{successMessage}}
+  </div>
+{{/if}}
+
+<h2 class="mb-4">Add New Product</h2>
+<form id="productForm" action="/create-product" method="post">
+  <div class="form-group">
+    <label for="asin">ASIN:</label>
+    <input type="text" class="form-control" id="asin" name="asin" placeholder="Enter ASIN" required>
+  </div>
+  <div class="form-group">
+    <label for="title">Title:</label>
+    <input type="text" class="form-control" id="title" name="title" placeholder="Enter title" required>
+  </div>
+  <div class="form-group">
+    <label for="imgUrl">Image URL:</label>
+    <input type="text" class="form-control" id="imgUrl" name="imgUrl" placeholder="Enter image URL">
+  </div>
+  <div class="form-group">
+    <label for="stars">Stars:</label>
+    <input type="number" class="form-control" id="stars" name="stars" placeholder="Enter stars">
+  </div>
+  <div class="form-group">
+    <label for="reviews">Reviews:</label>
+    <input type="number" class="form-control" id="reviews" name="reviews" placeholder="Enter reviews">
+  </div>
+  <div class="form-group">
+    <label for="price">Price:</label>
+    <input type="number" class="form-control" id="price" name="price" placeholder="Enter price">
+  </div>
+  <div class="form-group">
+    <label for="listPrice">List Price:</label>
+    <input type="number" class="form-control" id="listPrice" name="listPrice" placeholder="Enter list price">
+  </div>
+  <div class="form-group">
+    <label for="categoryName">Category Name:</label>
+    <input type="text" class="form-control" id="categoryName" name="categoryName" placeholder="Enter category name">
+  </div>
+  <div class="form-group">
+    <label for="isBestSeller">Is Best Seller:</label>
+    <select class="form-control" id="isBestSeller" name="isBestSeller">
+      <option value="true">True</option>
+      <option value="false">False</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="boughtInLastMonth">Bought In Last Month:</label>
+    <input type="number" class="form-control" id="boughtInLastMonth" name="boughtInLastMonth" placeholder="Enter bought in last month">
+  </div>
+  <button type="submit" class="mt-2 btn btn-primary">Submit</button>
+</form>
+
+<script>
+  window.onload = function() {
+    let form = document.getElementById('productForm');
+    form.addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent the form from submitting normally
+      
+      // Construct the form data object
+      let formData = {
+        asin: document.getElementById('asin').value,
+        title: document.getElementById('title').value,
+        imgUrl: document.getElementById('imgUrl').value,
+        stars: document.getElementById('stars').value,
+        reviews: document.getElementById('reviews').value,
+        price: document.getElementById('price').value,
+        listPrice: document.getElementById('listPrice').value,
+        categoryName: document.getElementById('categoryName').value,
+        isBestSeller: document.getElementById('isBestSeller').value,
+        boughtInLastMonth: document.getElementById('boughtInLastMonth').value
+      };
+
+      // Convert the form data object to JSON string
+      let jsonData = JSON.stringify(formData);
+
+      fetch('/create-product', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: jsonData
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json(); // Parse the JSON from the response
+      })
+      .then(data => {
+        if (data.success) {
+          // Clear the form if submission was successful
+          form.reset();
+          // Display success message
+          // You can modify this part according to your UI
+          alert(data.message);
+        } else {
+          throw new Error(data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error.message);
+        // Display error message
+        // You can modify this part according to your UI
+        alert('Error: ' + error.message);
+      });
+    });
+  };
+</script>
+

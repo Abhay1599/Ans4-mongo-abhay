@@ -1,0 +1,36 @@
+    <table class="table table-bordered dataTable">
+        <thead>
+        <tr>
+            <th>ASIN</th>
+            <th>Title</th>
+            <th>Image</th>
+            <th>Stars</th>
+            <th>Reviews</th>
+            <th>Price</th>
+            <th>List Price</th>
+            <th>Category Name</th>
+            <th>Is Best Seller</th>
+            <th>Last Month Sale</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#if data}}
+            {{#each data}}
+                <tr>
+                <td>{{this.asin}}</td>
+                <td>{{this.title}}</td>
+                <td>
+                    <img src={{this.imgUrl}} alt="" class="img-fluid text-center" loading="lazy" width="50px" />
+                </td>
+                <td>{{this.stars}}</td>
+                <td>{{this.reviews}}</td>
+                <td>{{this.price}}</td>
+                <td>{{this.listPrice}}</td>
+                <td>{{this.categoryName}}</td>
+                <td>{{this.isBestSeller}}</td>
+                <td>{{this.boughtInLastMonth}}</td>
+                </tr>
+            {{/each}}
+        {{/if}}
+        </tbody>
+    </table>
